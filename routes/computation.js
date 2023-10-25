@@ -6,30 +6,34 @@ router.get('/', function (req, res, next) {
   var queryX = parseFloat(req.query.x);
 
   if (!isNaN(queryX)) {
-    const hypotResult = Math.hypot(queryX);
-    const ceilResult = Math.ceil(queryX);
-    const clz32Result = Math.clz32(queryX);
+    if (queryX >= -1 && queryX <= 1) {
+      const atan2Result = Math.atan2(queryX, 0); // You need two arguments for Math.atan2
+      const atanhResult = Math.atanh(queryX);
+      const cbrtResult = Math.cbrt(queryX);
+
+      const response = `
+        atan2() applied to ${queryX} is ${atan2Result}<br>
+        atanh() applied to ${queryX} is ${atanhResult}<br>
+        cbrt() applied to ${queryX} is ${cbrtResult}<br>
+      `;
+      res.send(response);
+    } else {
+      res.send("Input value for atanh() is out of range.");
+    }
+  } else {
+    const randomX = Math.random() * 2 - 1; // Generate a random value between -1 and 1
+
+    const atan2Result = Math.atan2(randomX, 0); // You need two arguments for Math.atan2
+    const atanhResult = Math.atanh(randomX);
+    const cbrtResult = Math.cbrt(randomX);
 
     const response = `
-      hypot() applied to ${queryX} is ${hypotResult}<br>
-      ceil() applied to ${queryX} is ${ceilResult}<br>
-      clz32() applied to ${queryX} is ${clz32Result}<br>
+      atan2() applied to ${randomX} is ${atan2Result}<br>
+      atanh() applied to ${randomX} is ${atanhResult}<br>
+      cbrt() applied to ${randomX} is ${cbrtResult}<br>
     `;
     res.send(response);
   }
-  else{
-  const randomX = Math.random() * 100;
-
-  const hypotResult = Math.hypot(randomX);
-  const ceilResult = Math.ceil(randomX);
-  const clz32Result = Math.clz32(randomX);
-
-  const response = `
-    hypot() applied to ${randomX} is ${hypotResult}<br>
-    ceil() applied to ${randomX} is ${ceilResult}<br>
-    clz32() applied to ${randomX} is ${clz32Result}<br>
-  `;
-  res.send(response);
-  }
 });
+
 module.exports = router;
